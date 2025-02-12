@@ -1,25 +1,84 @@
-
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <!-- <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <script>
+      // VConsole will be exported to `window.VConsole` by default.
+      var vConsole = new window.VConsole();
+    </script> -->
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene 
+      mindar-image="imageTargetSrc: targets.mind;" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
+
       <a-assets>
-	<img id="card" src="Anniversary.png" />
-	<a-asset-item id="avatarModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/softmind/scene.gltf"></a-asset-item>
+        <img id="card" src="image/Anniversary.png" />
+        <img id="card2" src="image/LINE_ALBUM_090667_250212_3.jpg" />
+        <img id="card3" src="image/LINE_ALBUM_090667_250212_12.jpg" />
+        <img id="card4" src="image/LINE_ALBUM_kt_121267_250212_44.jpg" />
+        <img id="card5" src="image/LINE_ALBUM_kt_121267_250212_64.jpg" />
+        <img id="card6" src="image/S__1220694_0.jpg" /> 
+        <img id="card7" src="image/LINE_ALBUM_ar_250212_3.jpg" /> 
+        <img id="card8" src="image/LINE_ALBUM_ar_250212_27_1.jpg" /> 
+        <img id="card9" src="image/LINE_ALBUM_Doi Pui Day_250212_1.jpg" /> 
+        <video id="videoAsset" src="image/3000.mp4" preload="auto" loop muted playsinline></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.005 0.005 0.005" src="#avatarModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
+        <!-- <a-plane position="0 0 0" height="1" width="1" color="white"></a-plane> -->
+        <a-plane src="#card" position="1.2 0 0" height="1" width="1" rotation="0 0 0"></a-plane>
+        <a-plane src="#card2" position="1.2 1.2 0" height="1" width="1" rotation="0 0 0"></a-plane>
+        <a-plane src="#card3" position="0 1.2 0" height="1" width="1" rotation="0 0 0"></a-plane>
+        <a-plane src="#card4" position="-1.2 1.2 0" height="1" width="1" rotation="0 0 0"></a-plane>
+        <a-plane src="#card5" position="-1.2 0 0" height="1" width="1" rotation="0 0 0"></a-plane>
+        <a-plane src="#card6" position="-1.2 -1.2 0" height="1" width="1" rotation="0 0 0"></a-plane> 
+        <a-plane src="#card7" position="0 -1.2 0" height="1" width="1" rotation="0 0 0"></a-plane> 
+        <a-plane src="#card8" position="-1.2 0 0" height="1" width="1" rotation="0 0 0"></a-plane> 
+        <a-video id="videoDisplay" src="#videoAsset" position="0 0 0.1" width="1.08" height="1.438"></a-video>
       </a-entity>
+
     </a-scene>
+
+    <button id="unmuteButton" style="position: absolute; top: 10px; left: 10px; z-index: 10; padding: 10px; font-size: 16px;">
+      Open Song
+    </button>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const video = document.querySelector("#videoAsset");
+        const scene = document.querySelector("a-scene");
+        const target = document.querySelector("a-entity[mindar-image-target]");
+        const unmuteButton = document.querySelector("#unmuteButton");
+
+        scene.addEventListener("arReady", function () {
+          console.log("AR Ready");
+        });
+
+        target.addEventListener("targetFound", function () {
+          console.log("Target Found! Playing video...");
+          video.play();
+        });
+
+        target.addEventListener("targetLost", function () {
+          console.log("Target Lost! Pausing video...");
+          video.pause();
+        });
+
+        // ปุ่มเปิดเสียง
+        unmuteButton.addEventListener("click", function () {
+          video.muted = false;
+          video.play();
+          console.log("Unmuted video!");
+        });
+      });
+    </script>
   </body>
 </html>
